@@ -1,6 +1,6 @@
 ################
 ################
-## Coursera R programming assignment 2 
+## Coursera - R Programming - Assignment 2 
 ## JLS, Dec 2014
 
 ################
@@ -15,7 +15,7 @@
 ##     sMatrix$set(inputMatrix)           : store a matrix
 ##     sMatrix$setinv(solve(inputMatrix)) : store the inverse of the matrix
 ##
-## To get the data inside sMatrix use
+## To get the data from sMatrix use
 ##     sMatrix$get()        : returns the original matrix
 ##     sMatrix$getinverse() : returns the cached inverse of the matrix
 
@@ -24,15 +24,15 @@ makeCacheMatrix <- function(x = matrix()) {
        ## A local variable "m" is used to store the inverse matrix in the
        ## current (i.e., associated to makeCacheMatrix) environment.
        ## Note that a different environment is created for every input matrix.
-       ## On a explicit, direct call to makeCacheMatrix, m is first set
-       ## to NULL and is later modified by setinverse().
+       ## On a explicit, direct call to makeCacheMatrix, m is first
+       ## initialized to NULL and is later modified by setinverse().
        m <- NULL
 
        ## set: function to store the value of the matrix, argument is a matrix.
        ## This function is defined inside another function (makeCacheMatrix)
        ## and has an environment (specified by x), so it's a "function closure"
        set <- function(y) {
-               ## Assign the input matrix to "x" in the parent
+               ## Assign the input matrix "y" to "x" in the parent
                ## (i.e., makeCacheMatrix) environment using the "<<-" operator
                x <<- y
 
@@ -42,7 +42,7 @@ makeCacheMatrix <- function(x = matrix()) {
        }
 
        ## get: function to get the matrix. It already knows the value of the
-       ## matrix x from the environment, so no argument is needed.
+       ## matrix x from the parent environment, so no argument is needed.
        get <- function() {
                ## The matrix is read from the parent 
                ## (i.e., makeCacheMatrix) environment.
@@ -56,8 +56,8 @@ makeCacheMatrix <- function(x = matrix()) {
                m <<- inverse
        }
 
-       ## getinverse: function to get the inverse of the matrix,
-       ## no argument needed.
+       ## getinverse: function to get the inverse of the matrix. As in get(),
+       ## no argument is needed.
        getinverse <- function() {
                ## The inverse is read from the makeCacheMatrix environment.
                m
@@ -65,7 +65,7 @@ makeCacheMatrix <- function(x = matrix()) {
 
        ## Return a "special matrix": a list of function closures to get
        ## and set the value of a matrix and its inverse (the latter is NULL
-       ## if not available) plus an environment.
+       ## if not available).
        list(set=set, get=get, setinverse=setinverse, getinverse=getinverse)
 }
 
@@ -86,7 +86,7 @@ cacheSolve <- function(x, ...) {
        ## (i.e., defined in the cacheSolve environment) variable "m".
        m <- x$getinverse()
 
-       ## Check if the inverse is cached (should not be NULL) 
+       ## Check if the inverse is cached (i.e., m is not NULL) 
        if(!is.null(m)) {
                ## The inverse is not NULL: it's cached, so just
                ## return it and end the execution of cacheSolve().
@@ -110,6 +110,6 @@ cacheSolve <- function(x, ...) {
        ## function of the "special matrix" object "x".
        x$setinverse(m)
 
-       ## Return the inverse of the matrix. 
+       ## Return the inverse of the matrix.
        return(m)
 }
